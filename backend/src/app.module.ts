@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceOptions } from 'typeorm';
 import databaseConfig from './config/database.config';
 import { validateEnv } from './config/env.validation';
+import { EmployeesModule } from './employees/employees.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { validateEnv } from './config/env.validation';
       useFactory: (config: ConfigService) =>
         config.getOrThrow<DataSourceOptions>('database'),
     }),
+    EmployeesModule,
   ],
 })
 export class AppModule {}
