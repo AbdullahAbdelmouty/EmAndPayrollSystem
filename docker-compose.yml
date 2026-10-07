@@ -28,6 +28,7 @@ services:
       DB_NAME: ${POSTGRES_DB:-payroll}
       DB_USER: ${POSTGRES_USER:-payroll}
       DB_PASSWORD: ${POSTGRES_PASSWORD}
+      API_VERSION: ${API_VERSION:-v1}
       SEED_ON_START: ${SEED_ON_START:-true}
     ports:
       - "${BACKEND_PORT:-3000}:3000" # Swagger UI at /docs
@@ -35,7 +36,13 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "-qO-",
+          "http://localhost:3000/api/${API_VERSION:-v1}/health",
+        ]
       interval: 10s
       timeout: 3s
       retries: 5

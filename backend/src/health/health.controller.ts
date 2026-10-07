@@ -5,7 +5,10 @@ import {
   HealthIndicatorResult,
 } from '@nestjs/terminus';
 
-@Controller('health')
+@Controller({
+  path: 'health',
+  version: process.env.API_VERSION,
+})
 export class HealthController {
   constructor(private readonly health: HealthCheckService) {}
 
