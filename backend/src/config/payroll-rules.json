@@ -1,0 +1,14 @@
+{
+  "currency": "USD",
+  "incomeTax": {
+    "brackets": [
+      { "upToMinor": 1000000, "ratePercent": 0 },
+      { "upToMinor": 3000000, "ratePercent": 10 },
+      { "upToMinor": null, "ratePercent": 20 }
+    ]
+  },
+  "socialInsurance": {
+    "ratePercent": 8,
+    "insurableSalaryCapMinor": 4000000
+  }
+}
