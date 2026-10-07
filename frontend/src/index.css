@@ -20,7 +20,16 @@
 }
 
 @layer base {
-  * { @apply border-border; }
-  body { @apply min-w-80 bg-background text-foreground antialiased; }
-  button, input, select, textarea { font: inherit; }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply min-w-80 bg-background text-foreground antialiased;
+  }
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
 }

@@ -44,8 +44,8 @@ export function toOrmEntity(employee: Employee): EmployeeOrmEntity {
 
 function toPayItems(entities: PayItemEntity[] | undefined): PayItem[] {
   return (entities ?? [])
-    .map(({ type, amountMinor }) => ({ type, amountMinor }))
-    .sort((a, b) => a.type.localeCompare(b.type));
+    .map(({ type, month, amountMinor }) => ({ type, month, amountMinor }))
+    .sort((a, b) => a.month.localeCompare(b.month) || a.type.localeCompare(b.type));
 }
 
 function toPayItemEntity<T extends PayItemEntity>(
@@ -55,6 +55,7 @@ function toPayItemEntity<T extends PayItemEntity>(
 ): T {
   entity.employeeId = employeeId;
   entity.type = item.type;
+  entity.month = item.month;
   entity.amountMinor = item.amountMinor;
   return entity;
 }

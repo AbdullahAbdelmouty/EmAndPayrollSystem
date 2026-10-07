@@ -175,34 +175,34 @@ describe('Employee.create', () => {
     it('normalizes the type to upper case', () => {
       const employee = Employee.create(
         validInput({
-          allowances: [{ type: ' transport ', amountMinor: 5_000 }],
+          allowances: [{ type: ' transport ', month: ' 2026-03 ', amountMinor: 5_000 }],
         }),
         today,
       );
 
       expect(employee.allowances).toEqual([
-        { type: 'TRANSPORT', amountMinor: 5_000 },
+        { type: 'TRANSPORT', month: '2026-03', amountMinor: 5_000 },
       ]);
     });
 
     it('accepts a zero amount', () => {
       expect(
         fieldsRejectedBy(
-          validInput({ allowances: [{ type: 'HOUSING', amountMinor: 0 }] }),
+          validInput({ allowances: [{ type: 'HOUSING', month: '2026-03', amountMinor: 0 }] }),
         ),
       ).toEqual([]);
     });
 
     it('rejects a negative amount', () => {
       const input = validInput({
-        deductions: [{ type: 'LOAN', amountMinor: -1 }],
+        deductions: [{ type: 'LOAN', month: '2026-03', amountMinor: -1 }],
       });
       expect(fieldsRejectedBy(input)).toEqual(['deductions[0].amountMinor']);
     });
 
     it('rejects a blank type', () => {
       const input = validInput({
-        allowances: [{ type: '  ', amountMinor: 100 }],
+        allowances: [{ type: '  ', month: '2026-03', amountMinor: 100 }],
       });
       expect(fieldsRejectedBy(input)).toEqual(['allowances[0].type']);
     });
@@ -210,8 +210,8 @@ describe('Employee.create', () => {
     it('rejects duplicate types after normalization', () => {
       const input = validInput({
         allowances: [
-          { type: 'transport', amountMinor: 100 },
-          { type: 'TRANSPORT', amountMinor: 200 },
+          { type: 'transport', month: '2026-03', amountMinor: 100 },
+          { type: 'TRANSPORT', month: '2026-03', amountMinor: 200 },
         ],
       });
       expect(fieldsRejectedBy(input)).toEqual(['allowances[1].type']);
@@ -300,7 +300,7 @@ describe('Employee.rehydrate', () => {
 
   it('does not share mutable arrays with the caller', () => {
     const state = Employee.create(
-      validInput({ allowances: [{ type: 'HOUSING', amountMinor: 10 }] }),
+      validInput({ allowances: [{ type: 'HOUSING', month: '2026-03', amountMinor: 10 }] }),
       today,
     ).toState();
     const restored = Employee.rehydrate(state);

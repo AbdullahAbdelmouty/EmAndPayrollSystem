@@ -102,7 +102,7 @@ export function AppShell({ children, activeSection }: AppShellProps) {
             <Menu className="size-5" />
           </Button>
           <p className="text-sm font-semibold text-slate-700">
-            Employee Management
+            {activeSection === "payroll" ? "Payroll" : "Employee Management"}
           </p>
           <span className="ml-auto grid size-8 place-items-center rounded-full bg-indigo-100 text-xs font-bold text-indigo-700">
             HR

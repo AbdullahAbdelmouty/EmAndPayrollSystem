@@ -4,10 +4,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { OptionCombobox } from "@/components/shared/OptionCombobox";
 import { useEmployeeForm } from "@/features/employees/hooks/useEmployeeForm";
 import type { Employee, EmployeeInput } from "@/features/employees/types";
 import { toEmployeeInput } from "@/features/employees/validation/employeeValidation";
 import { getErrorMessage } from "@/lib/get-error-message";
+import { PayItemsEditor } from "./PayItemsEditor";
 
 interface EmployeeFormProps {
   employee?: Employee;
@@ -84,26 +86,33 @@ export function EmployeeForm({
               />
               {error(errors.email)}
             </label>
-            <label className={fieldClass}>
+
+            {/* Comboboxes use <div>, not <label>, so popup clicks don't bubble to a label */}
+            <div className={fieldClass}>
               <span className={labelClass}>Job title</span>
-              <Input
-                aria-invalid={Boolean(errors.jobTitle)}
-                onChange={(event) => setField("jobTitle", event.target.value)}
-                placeholder="Software Engineer"
+              <OptionCombobox
+                ariaLabel="Job title"
+                invalid={Boolean(errors.jobTitle)}
+                items={JOB_TITLE_OPTIONS}
+                onChange={(value) => setField("jobTitle", value)}
+                placeholder="Select a job title"
                 value={values.jobTitle}
               />
               {error(errors.jobTitle)}
-            </label>
-            <label className={fieldClass}>
+            </div>
+            <div className={fieldClass}>
               <span className={labelClass}>Department</span>
-              <Input
-                aria-invalid={Boolean(errors.department)}
-                onChange={(event) => setField("department", event.target.value)}
-                placeholder="Engineering"
+              <OptionCombobox
+                ariaLabel="Department"
+                invalid={Boolean(errors.department)}
+                items={DEPARTMENT_OPTIONS}
+                onChange={(value) => setField("department", value)}
+                placeholder="Select a department"
                 value={values.department}
               />
               {error(errors.department)}
-            </label>
+            </div>
+
             <label className={fieldClass}>
               <span className={labelClass}>Hire date</span>
               <Input
@@ -145,6 +154,20 @@ export function EmployeeForm({
               </select>
             </label>
           </div>
+          <div className="grid gap-5 border-t pt-5 lg:grid-cols-2">
+            <PayItemsEditor
+              error={errors.allowances}
+              items={values.allowances ?? []}
+              kind="Allowance"
+              onChange={(allowances) => setField("allowances", allowances)}
+            />
+            <PayItemsEditor
+              error={errors.deductions}
+              items={values.deductions ?? []}
+              kind="Deduction"
+              onChange={(deductions) => setField("deductions", deductions)}
+            />
+          </div>
           <div className="flex flex-col-reverse gap-3 border-t pt-5 sm:flex-row sm:justify-end">
             <Button
               disabled={isPending}
@@ -167,3 +190,31 @@ export function EmployeeForm({
     </Card>
   );
 }
+
+const DEPARTMENT_OPTIONS = [
+  "Customer Success",
+  "Engineering",
+  "Finance",
+  "Operations",
+  "People",
+  "Product",
+  "Sales",
+];
+
+const JOB_TITLE_OPTIONS = [
+  "Account Executive",
+  "Accountant",
+  "Backend Engineer",
+  "Customer Success Manager",
+  "Engineering Manager",
+  "Financial Controller",
+  "Frontend Engineer",
+  "HR Business Partner",
+  "Operations Coordinator",
+  "Product Designer",
+  "Product Manager",
+  "QA Engineer",
+  "Senior Backend Engineer",
+  "Support Specialist",
+  "Talent Acquisition Specialist",
+];

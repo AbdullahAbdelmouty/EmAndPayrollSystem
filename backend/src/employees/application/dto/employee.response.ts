@@ -5,6 +5,7 @@ import { EmployeeStatus } from '../../domain/employee-status.enum';
 
 export class PayItemResponse {
   @ApiProperty() type!: string;
+  @ApiProperty({ example: '2026-10' }) month!: string;
   @ApiProperty({ description: 'Minor units (cents)' }) amountMinor!: number;
 }
 

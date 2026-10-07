@@ -79,16 +79,16 @@ describe('EmployeesService', () => {
     it('stores allowances and deductions', async () => {
       const created = await service.create(
         newEmployee({
-          allowances: [{ type: 'transport', amountMinor: 5_000 }],
-          deductions: [{ type: 'LOAN', amountMinor: 1_000 }],
+          allowances: [{ type: 'transport', month: '2026-10', amountMinor: 5_000 }],
+          deductions: [{ type: 'LOAN', month: '2026-10', amountMinor: 1_000 }],
         }),
       );
 
       expect(created.allowances).toEqual([
-        { type: 'TRANSPORT', amountMinor: 5_000 },
+        { type: 'TRANSPORT', month: '2026-10', amountMinor: 5_000 },
       ]);
       expect(created.deductions).toEqual([
-        { type: 'LOAN', amountMinor: 1_000 },
+        { type: 'LOAN', month: '2026-10', amountMinor: 1_000 },
       ]);
     });
   });

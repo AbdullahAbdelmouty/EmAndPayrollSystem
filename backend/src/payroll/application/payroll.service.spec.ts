@@ -38,8 +38,8 @@ function newEmployee(overrides: Partial<NewEmployee> = {}): Employee {
       department: 'Engineering',
       hireDate: '2025-01-10',
       baseSalaryMinor: 2_000_000,
-      allowances: [{ type: 'TRANSPORT', amountMinor: 200_000 }],
-      deductions: [{ type: 'LOAN', amountMinor: 50_000 }],
+      allowances: [{ type: 'TRANSPORT', month: '2026-03', amountMinor: 200_000 }],
+      deductions: [{ type: 'LOAN', month: '2026-03', amountMinor: 50_000 }],
       ...overrides,
     },
     TODAY,
@@ -71,6 +71,37 @@ describe('PayrollService', () => {
     expect(result.payslip.grossSalary.toMinorNumber()).toBe(2_200_000);
     expect(result.payslip.totalDeductions.toMinorNumber()).toBe(330_000); // 160k + 120k + 50k
     expect(result.payslip.netSalary.toMinorNumber()).toBe(1_870_000);
+  });
+
+  it('includes pay items assigned to the requested month only', async () => {
+    await repository.save(
+      newEmployee({
+        allowances: [
+          { type: 'MARCH_BONUS', month: '2026-03', amountMinor: 100_000 },
+          { type: 'APRIL_BONUS', month: '2026-04', amountMinor: 300_000 },
+        ],
+        deductions: [
+          { type: 'MARCH_LOAN', month: '2026-03', amountMinor: 25_000 },
+          { type: 'APRIL_LOAN', month: '2026-04', amountMinor: 75_000 },
+        ],
+      }),
+    );
+
+    const march = await service.getPayslip(EMPLOYEE_ID, '2026-03');
+    const april = await service.getPayslip(EMPLOYEE_ID, '2026-04');
+
+    expect(march.payslip.allowances.map((line) => line.type)).toEqual([
+      'MARCH_BONUS',
+    ]);
+    expect(march.payslip.otherDeductions.map((line) => line.type)).toEqual([
+      'MARCH_LOAN',
+    ]);
+    expect(april.payslip.allowances.map((line) => line.type)).toEqual([
+      'APRIL_BONUS',
+    ]);
+    expect(april.payslip.otherDeductions.map((line) => line.type)).toEqual([
+      'APRIL_LOAN',
+    ]);
   });
 
   it('works for an employee with no allowances or deductions', async () => {
@@ -131,7 +162,7 @@ describe('PayrollService', () => {
       newEmployee({
         baseSalaryMinor: 100_000,
         allowances: [],
-        deductions: [{ type: 'ADVANCE', amountMinor: 200_000 }],
+        deductions: [{ type: 'ADVANCE', month: '2026-03', amountMinor: 200_000 }],
       }),
     );
 
