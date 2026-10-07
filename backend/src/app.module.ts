@@ -8,6 +8,7 @@ import { createValidationPipe } from './common/pipes/app-validation.pipe';
 import databaseConfig from './config/database.config';
 import { validateEnv } from './config/env.validation';
 import { EmployeesModule } from './employees/employees.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { EmployeesModule } from './employees/employees.module';
         config.getOrThrow<DataSourceOptions>('database'),
     }),
     EmployeesModule,
+    HealthModule,
   ],
   providers: [
     { provide: APP_FILTER, useClass: ProblemDetailsFilter },
