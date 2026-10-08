@@ -11,8 +11,18 @@ import { EmployeesModule } from './employees/employees.module';
 import { HealthModule } from './health/health.module';
 import { PayrollModule } from './payroll/payroll.module';
 
+import { LoggerModule } from 'nestjs-pino';
+
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport:
+          process.env.NODE_ENV !== 'production'
+            ? { target: 'pino-pretty', options: { singleLine: true } }
+            : undefined,
+      },
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig],
