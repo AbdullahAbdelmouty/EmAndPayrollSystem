@@ -11,7 +11,7 @@ import { bigintTransformer } from '../../common/database/bigint.transformer';
 import { EmployeeOrmEntity } from './employee.orm-entity';
 
 @Entity('employee_deductions')
-@Unique('uq_deduction_employee_type', ['employeeId', 'type'])
+@Unique('uq_deduction_employee_month_type', ['employeeId', 'month', 'type'])
 @Check('ck_deduction_amount', '"amount_minor" >= 0')
 export class EmployeeDeductionOrmEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -28,6 +28,9 @@ export class EmployeeDeductionOrmEntity {
 
   @Column({ type: 'varchar', length: 50 })
   type!: string;
+
+  @Column({ type: 'varchar', length: 7 })
+  month!: string;
 
   @Column({
     name: 'amount_minor',

@@ -15,10 +15,10 @@ const employee = Employee.create(
     baseSalaryMinor: 500_000,
     status: EmployeeStatus.Inactive,
     allowances: [
-      { type: 'TRANSPORT', amountMinor: 5_000 },
-      { type: 'HOUSING', amountMinor: 20_000 },
+      { type: 'TRANSPORT', month: '2026-03', amountMinor: 5_000 },
+      { type: 'HOUSING', month: '2026-03', amountMinor: 20_000 },
     ],
-    deductions: [{ type: 'LOAN', amountMinor: 1_000 }],
+    deductions: [{ type: 'LOAN', month: '2026-03', amountMinor: 1_000 }],
   },
   today,
 );
@@ -30,8 +30,8 @@ describe('employee mapper', () => {
     expect(restored.toState()).toEqual({
       ...employee.toState(),
       allowances: [
-        { type: 'HOUSING', amountMinor: 20_000 },
-        { type: 'TRANSPORT', amountMinor: 5_000 },
+        { type: 'HOUSING', month: '2026-03', amountMinor: 20_000 },
+        { type: 'TRANSPORT', month: '2026-03', amountMinor: 5_000 },
       ],
     });
   });

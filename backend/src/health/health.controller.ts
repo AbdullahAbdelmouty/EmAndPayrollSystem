@@ -16,11 +16,12 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      async (): Promise<HealthIndicatorResult> => ({
-        app: {
-          status: 'up',
-        },
-      }),
+      (): Promise<HealthIndicatorResult> =>
+        Promise.resolve({
+          app: {
+            status: 'up',
+          },
+        }),
     ]);
   }
 }

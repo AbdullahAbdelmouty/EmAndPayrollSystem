@@ -26,8 +26,28 @@ export function validateEmployee(values: EmployeeFormValues): FieldErrors {
     Number(values.baseSalary) <= 0
   )
     errors.baseSalary = "Base salary must be greater than zero.";
+  if (!arePayItemsValid(values.allowances))
+    errors.allowances = "Each allowance needs a type, valid month, and non-negative amount.";
+  if (!arePayItemsValid(values.deductions))
+    errors.deductions = "Each deduction needs a type, valid month, and non-negative amount.";
 
   return errors;
+}
+
+function arePayItemsValid(items: EmployeeInput["allowances"]): boolean {
+  if (!items) return true;
+  const uniqueItems = new Set<string>();
+  return items.every((item) => {
+    const key = `${item.month}:${item.type.trim().toUpperCase()}`;
+    const isValid =
+      Boolean(item.type.trim()) &&
+      /^\d{4}-(0[1-9]|1[0-2])$/.test(item.month) &&
+      Number.isSafeInteger(item.amountMinor) &&
+      item.amountMinor >= 0 &&
+      !uniqueItems.has(key);
+    uniqueItems.add(key);
+    return isValid;
+  });
 }
 
 export function toEmployeeInput(values: EmployeeFormValues): EmployeeInput {

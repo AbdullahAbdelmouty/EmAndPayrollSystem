@@ -44,8 +44,8 @@ export class PayrollService {
 
     const payslip = this.calculator.calculate({
       baseSalary: Money.ofMinor(employee.baseSalaryMinor),
-      allowances: toPayslipLines(employee.allowances),
-      otherDeductions: toPayslipLines(employee.deductions),
+      allowances: toPayslipLines(employee.allowances, month),
+      otherDeductions: toPayslipLines(employee.deductions, month),
     });
 
     return {
@@ -68,9 +68,11 @@ export class PayrollService {
   }
 }
 
-function toPayslipLines(items: PayItem[]): PayslipLine[] {
-  return items.map((item) => ({
-    type: item.type,
-    amount: Money.ofMinor(item.amountMinor),
-  }));
+function toPayslipLines(items: PayItem[], month: string): PayslipLine[] {
+  return items
+    .filter((item) => item.month === month)
+    .map((item) => ({
+      type: item.type,
+      amount: Money.ofMinor(item.amountMinor),
+    }));
 }

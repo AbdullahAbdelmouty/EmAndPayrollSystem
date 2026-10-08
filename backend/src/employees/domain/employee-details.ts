@@ -1,5 +1,6 @@
 export interface PayItem {
   type: string;
+  month: string;
   amountMinor: number;
 }
 
@@ -36,5 +37,9 @@ export function normalizeDetails(details: EmployeeDetails): EmployeeDetails {
 }
 
 function normalizePayItem(item: PayItem): PayItem {
-  return { ...item, type: item.type.trim().toUpperCase() };
+  return {
+    ...item,
+    type: item.type.trim().toUpperCase(),
+    month: item.month.trim(),
+  };
 }

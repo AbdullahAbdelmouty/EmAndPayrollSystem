@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsString, MaxLength, Min } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  Matches,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { trim } from '../../../common/validation/trim.transform';
 
 export class PayItemDto {
@@ -10,6 +17,16 @@ export class PayItemDto {
   @IsNotEmpty()
   @MaxLength(50)
   type!: string;
+
+  @ApiProperty({
+    example: '2026-10',
+    description: 'Payroll month in YYYY-MM format',
+  })
+  @Transform(trim)
+  @Matches(/^\d{4}-(0[1-9]|1[0-2])$/, {
+    message: 'month must be in YYYY-MM format',
+  })
+  month!: string;
 
   @ApiProperty({
     example: 25000,

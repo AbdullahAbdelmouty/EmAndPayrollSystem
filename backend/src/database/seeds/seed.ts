@@ -5,6 +5,8 @@ import { EmployeeDeductionOrmEntity } from '../../employees/infrastructure/emplo
 import { EmployeeOrmEntity } from '../../employees/infrastructure/employee.orm-entity';
 import { demoEmployees } from './employees.seed-data';
 
+const DEMO_PAYROLL_MONTH = '2026-10';
+
 async function seed(): Promise<void> {
   await dataSource.initialize();
 
@@ -47,6 +49,7 @@ async function seed(): Promise<void> {
             employee.allowances.map((allowance) =>
               allowanceRepository.create({
                 employeeId: savedEmployee.id,
+                month: DEMO_PAYROLL_MONTH,
                 ...allowance,
               }),
             ),
@@ -58,6 +61,7 @@ async function seed(): Promise<void> {
             employee.deductions.map((deduction) =>
               deductionRepository.create({
                 employeeId: savedEmployee.id,
+                month: DEMO_PAYROLL_MONTH,
                 ...deduction,
               }),
             ),

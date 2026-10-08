@@ -35,6 +35,7 @@ describe('ProblemDetailsFilter', () => {
       }),
     } as unknown as ArgumentsHost;
     filter.catch(exception, host);
+
     return response.json.mock.calls[0][0] as ProblemDetails;
   };
 

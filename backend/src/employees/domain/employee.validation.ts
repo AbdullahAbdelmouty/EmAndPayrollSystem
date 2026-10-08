@@ -6,6 +6,7 @@ export const EMAIL_MAX_LENGTH = 254;
 
 const EMAIL_FORMAT = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ISO_DATE_FORMAT = /^\d{4}-\d{2}-\d{2}$/;
+const PAYROLL_MONTH_FORMAT = /^\d{4}-(0[1-9]|1[0-2])$/;
 
 export function validateEmployeeDetails(
   details: EmployeeDetails,
@@ -89,15 +90,26 @@ function validatePayItems(
   items: PayItem[],
 ): FieldError[] {
   const errors: FieldError[] = [];
-  const seenTypes = new Set<string>();
+  const seenItems = new Set<string>();
 
   items.forEach((item, index) => {
     const path = `${field}[${index}]`;
     if (item.type.length === 0)
       errors.push(fieldError(`${path}.type`, 'Type is required.'));
-    if (seenTypes.has(item.type))
-      errors.push(fieldError(`${path}.type`, `Duplicate type ${item.type}.`));
-    seenTypes.add(item.type);
+    if (!PAYROLL_MONTH_FORMAT.test(item.month)) {
+      errors.push(
+        fieldError(`${path}.month`, 'Month must be in YYYY-MM format.'),
+      );
+    }
+    const key = `${item.month}:${item.type}`;
+    if (seenItems.has(key))
+      errors.push(
+        fieldError(
+          `${path}.type`,
+          `Duplicate ${item.type} item for ${item.month}.`,
+        ),
+      );
+    seenItems.add(key);
     if (!Number.isSafeInteger(item.amountMinor) || item.amountMinor < 0) {
       errors.push(
         fieldError(

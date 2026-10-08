@@ -4,6 +4,7 @@ export type EmployeeStatus = (typeof EMPLOYEE_STATUSES)[number];
 
 export interface PayItem {
   type: string;
+  month: string;
   amountMinor: number;
 }
 

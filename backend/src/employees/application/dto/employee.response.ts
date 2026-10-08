@@ -5,6 +5,7 @@ import { EmployeeStatus } from '../../domain/employee-status.enum';
 
 export class PayItemResponse {
   @ApiProperty() type!: string;
+  @ApiProperty({ example: '2026-10' }) month!: string;
   @ApiProperty({ description: 'Minor units (cents)' }) amountMinor!: number;
 }
 
@@ -45,7 +46,7 @@ export class EmployeePageResponse {
 
   static from(result: PaginatedResult<Employee>): EmployeePageResponse {
     return {
-      items: result.items.map(EmployeeResponse.from),
+      items: result.items.map((item) => EmployeeResponse.from(item)),
       total: result.total,
       page: result.page,
       pageSize: result.pageSize,
