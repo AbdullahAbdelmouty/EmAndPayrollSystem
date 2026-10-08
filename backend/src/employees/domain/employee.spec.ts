@@ -175,7 +175,9 @@ describe('Employee.create', () => {
     it('normalizes the type to upper case', () => {
       const employee = Employee.create(
         validInput({
-          allowances: [{ type: ' transport ', month: ' 2026-03 ', amountMinor: 5_000 }],
+          allowances: [
+            { type: ' transport ', month: ' 2026-03 ', amountMinor: 5_000 },
+          ],
         }),
         today,
       );
@@ -188,7 +190,9 @@ describe('Employee.create', () => {
     it('accepts a zero amount', () => {
       expect(
         fieldsRejectedBy(
-          validInput({ allowances: [{ type: 'HOUSING', month: '2026-03', amountMinor: 0 }] }),
+          validInput({
+            allowances: [{ type: 'HOUSING', month: '2026-03', amountMinor: 0 }],
+          }),
         ),
       ).toEqual([]);
     });
@@ -300,7 +304,9 @@ describe('Employee.rehydrate', () => {
 
   it('does not share mutable arrays with the caller', () => {
     const state = Employee.create(
-      validInput({ allowances: [{ type: 'HOUSING', month: '2026-03', amountMinor: 10 }] }),
+      validInput({
+        allowances: [{ type: 'HOUSING', month: '2026-03', amountMinor: 10 }],
+      }),
       today,
     ).toState();
     const restored = Employee.rehydrate(state);

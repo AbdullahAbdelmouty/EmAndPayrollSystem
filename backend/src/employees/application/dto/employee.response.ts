@@ -46,7 +46,7 @@ export class EmployeePageResponse {
 
   static from(result: PaginatedResult<Employee>): EmployeePageResponse {
     return {
-      items: result.items.map(EmployeeResponse.from),
+      items: result.items.map((item) => EmployeeResponse.from(item)),
       total: result.total,
       page: result.page,
       pageSize: result.pageSize,

@@ -52,12 +52,16 @@ export class PayslipResponse {
       month,
       currency,
       baseSalaryMinor: payslip.baseSalary.toMinorNumber(),
-      allowances: payslip.allowances.map(PayslipLineResponse.from),
-      grossSalaryMinor: payslip.grossSalary.toMinorNumber(),
-      statutoryDeductions: payslip.statutoryDeductions.map(
-        PayslipLineResponse.from,
+      allowances: payslip.allowances.map((item) =>
+        PayslipLineResponse.from(item),
       ),
-      otherDeductions: payslip.otherDeductions.map(PayslipLineResponse.from),
+      grossSalaryMinor: payslip.grossSalary.toMinorNumber(),
+      statutoryDeductions: payslip.statutoryDeductions.map((item) =>
+        PayslipLineResponse.from(item),
+      ),
+      otherDeductions: payslip.otherDeductions.map((item) =>
+        PayslipLineResponse.from(item),
+      ),
       totalDeductionsMinor: payslip.totalDeductions.toMinorNumber(),
       netSalaryMinor: payslip.netSalary.toMinorNumber(),
     };

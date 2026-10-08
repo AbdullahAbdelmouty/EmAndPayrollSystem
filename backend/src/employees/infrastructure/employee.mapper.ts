@@ -32,7 +32,7 @@ export function toOrmEntity(employee: Employee): EmployeeOrmEntity {
   entity.department = employee.department;
   entity.hireDate = employee.hireDate;
   entity.baseSalaryMinor = employee.baseSalaryMinor;
-  entity.status = employee.status as EmployeeOrmEntity['status'];
+  entity.status = employee.status;
   entity.allowances = employee.allowances.map((item) =>
     toPayItemEntity(new EmployeeAllowanceOrmEntity(), employee.id, item),
   );
@@ -45,7 +45,9 @@ export function toOrmEntity(employee: Employee): EmployeeOrmEntity {
 function toPayItems(entities: PayItemEntity[] | undefined): PayItem[] {
   return (entities ?? [])
     .map(({ type, month, amountMinor }) => ({ type, month, amountMinor }))
-    .sort((a, b) => a.month.localeCompare(b.month) || a.type.localeCompare(b.type));
+    .sort(
+      (a, b) => a.month.localeCompare(b.month) || a.type.localeCompare(b.type),
+    );
 }
 
 function toPayItemEntity<T extends PayItemEntity>(

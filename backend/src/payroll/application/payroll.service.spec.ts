@@ -38,7 +38,9 @@ function newEmployee(overrides: Partial<NewEmployee> = {}): Employee {
       department: 'Engineering',
       hireDate: '2025-01-10',
       baseSalaryMinor: 2_000_000,
-      allowances: [{ type: 'TRANSPORT', month: '2026-03', amountMinor: 200_000 }],
+      allowances: [
+        { type: 'TRANSPORT', month: '2026-03', amountMinor: 200_000 },
+      ],
       deductions: [{ type: 'LOAN', month: '2026-03', amountMinor: 50_000 }],
       ...overrides,
     },
@@ -162,7 +164,9 @@ describe('PayrollService', () => {
       newEmployee({
         baseSalaryMinor: 100_000,
         allowances: [],
-        deductions: [{ type: 'ADVANCE', month: '2026-03', amountMinor: 200_000 }],
+        deductions: [
+          { type: 'ADVANCE', month: '2026-03', amountMinor: 200_000 },
+        ],
       }),
     );
 

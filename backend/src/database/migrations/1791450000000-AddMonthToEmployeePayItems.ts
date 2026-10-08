@@ -1,8 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class AddMonthToEmployeePayItems1791450000000
-  implements MigrationInterface
-{
+export class AddMonthToEmployeePayItems1791450000000 implements MigrationInterface {
   name = 'AddMonthToEmployeePayItems1791450000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -57,7 +55,11 @@ export class AddMonthToEmployeePayItems1791450000000
     await queryRunner.query(
       `ALTER TABLE "employee_allowances" ADD CONSTRAINT "uq_allowance_employee_type" UNIQUE ("employee_id", "type")`,
     );
-    await queryRunner.query(`ALTER TABLE "employee_deductions" DROP COLUMN "month"`);
-    await queryRunner.query(`ALTER TABLE "employee_allowances" DROP COLUMN "month"`);
+    await queryRunner.query(
+      `ALTER TABLE "employee_deductions" DROP COLUMN "month"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "employee_allowances" DROP COLUMN "month"`,
+    );
   }
 }

@@ -86,8 +86,7 @@ export class TypeOrmEmployeeRepository implements EmployeeRepository {
   ): FindOptionsWhere<EmployeeOrmEntity>[] {
     const filters: FindOptionsWhere<EmployeeOrmEntity> = {};
     if (criteria.department) filters.department = criteria.department;
-    if (criteria.status)
-      filters.status = criteria.status as EmployeeOrmEntity['status'];
+    if (criteria.status) filters.status = criteria.status;
     if (!criteria.search) return [filters];
 
     const pattern = ILike(`%${escapeLikePattern(criteria.search)}%`);

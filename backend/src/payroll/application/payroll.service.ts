@@ -69,8 +69,10 @@ export class PayrollService {
 }
 
 function toPayslipLines(items: PayItem[], month: string): PayslipLine[] {
-  return items.filter((item) => item.month === month).map((item) => ({
-    type: item.type,
-    amount: Money.ofMinor(item.amountMinor),
-  }));
+  return items
+    .filter((item) => item.month === month)
+    .map((item) => ({
+      type: item.type,
+      amount: Money.ofMinor(item.amountMinor),
+    }));
 }

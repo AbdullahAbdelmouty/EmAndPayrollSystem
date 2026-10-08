@@ -79,7 +79,9 @@ describe('EmployeesService', () => {
     it('stores allowances and deductions', async () => {
       const created = await service.create(
         newEmployee({
-          allowances: [{ type: 'transport', month: '2026-10', amountMinor: 5_000 }],
+          allowances: [
+            { type: 'transport', month: '2026-10', amountMinor: 5_000 },
+          ],
           deductions: [{ type: 'LOAN', month: '2026-10', amountMinor: 1_000 }],
         }),
       );
