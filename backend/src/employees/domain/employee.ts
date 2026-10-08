@@ -92,8 +92,16 @@ export class Employee {
   }
 
   private details(): EmployeeDetails {
-    const { id, status, ...details } = this.state;
-    return details;
+    return {
+      fullName: this.state.fullName,
+      email: this.state.email,
+      jobTitle: this.state.jobTitle,
+      department: this.state.department,
+      hireDate: this.state.hireDate,
+      baseSalaryMinor: this.state.baseSalaryMinor,
+      allowances: this.state.allowances,
+      deductions: this.state.deductions,
+    };
   }
 
   private static withDefaults(input: EmployeeDetailsInput): EmployeeDetails {
