@@ -21,7 +21,12 @@ class WidgetLockedError extends BusinessRuleViolationError {
 
 describe('ProblemDetailsFilter', () => {
   const filter = new ProblemDetailsFilter();
-  let response: { status: jest.Mock; type: jest.Mock; json: jest.Mock };
+  let response: {
+    status: jest.Mock;
+    type: jest.Mock;
+    json: jest.Mock<unknown, [ProblemDetails]>;
+  };
+  let errorSpy: jest.SpyInstance;
 
   const run = (
     exception: unknown,
@@ -36,17 +41,17 @@ describe('ProblemDetailsFilter', () => {
     } as unknown as ArgumentsHost;
     filter.catch(exception, host);
 
-    return response.json.mock.calls[0][0] as ProblemDetails;
+    return response.json.mock.calls[0][0];
   };
 
   beforeEach(() => {
     response = {
       status: jest.fn().mockReturnThis(),
       type: jest.fn().mockReturnThis(),
-      json: jest.fn(),
+      json: jest.fn<unknown, [ProblemDetails]>(),
     };
     jest.spyOn(Logger.prototype, 'warn').mockImplementation();
-    jest.spyOn(Logger.prototype, 'error').mockImplementation();
+    errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation();
   });
 
   afterEach(() => jest.restoreAllMocks());
@@ -123,7 +128,7 @@ describe('ProblemDetailsFilter', () => {
     expect(problem.status).toBe(500);
     expect(problem.detail).toBe('An unexpected error occurred.');
     expect(JSON.stringify(problem)).not.toContain('secret');
-    expect(Logger.prototype.error).toHaveBeenCalled();
+    expect(errorSpy).toHaveBeenCalled();
   });
 
   it('reuses the incoming x-request-id as traceId, otherwise generates one', () => {
